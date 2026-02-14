@@ -1,0 +1,93 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it."
+title: "TRIDENT: TRIadic DEtectioN via staTistical validation"
+type: software
+authors:
+  - family-names: "Marzi"
+    given-names: "Mattia"
+version: "0.1.0"
+date-released: "2026-01-19"
+license: "MIT"
+keywords:
+  - bipartite networks
+  - maximum entropy
+  - statistical validation
+  - hypergraphs
+  - higher-order interactions
+preferred-citation:
+  type: manuscript
+  title: "Signatures of higher-order cooperation/coordination in the human brain"
+  authors:
+    - family-names: "Agrimi"
+      given-names: "Emanuele"
+    - family-names: "Giuffrida"
+      given-names: "Francesca"
+    - family-names: "Marzi"
+      given-names: "Mattia"
+    - family-names: "Gallo"
+      given-names: "Anna"
+    - family-names: "Squartini"
+      given-names: "Tiziano"
+    - family-names: "Gili"
+      given-names: "Tommaso"
+  year: 2026
+  notes: "Preprint (manuscript in preparation)"
+references:
+  - type: software
+    title: "BiCM"
+    url: "https://github.com/mat701/BiCM"
+  - type: article
+    authors:
+      - family-names: "Vallarano"
+        given-names: "Nicolo"
+      - family-names: "Bruno"
+        given-names: "Matteo"
+      - family-names: "Marchese"
+        given-names: "Emiliano"
+      - family-names: "Trapani"
+        given-names: "Giuseppe"
+      - family-names: "Saracco"
+        given-names: "Fabio"
+      - family-names: "Squartini"
+        given-names: "Tiziano"
+      - family-names: "Cimini"
+        given-names: "Giulio"
+      - family-names: "Zanon"
+        given-names: "Mario"
+    title: "Fast and scalable likelihood maximization for Exponential Random Graph Models with local constraints"
+    journal: "Scientific Reports"
+    year: 2021
+  - type: article
+    authors:
+      - family-names: "Saracco"
+        given-names: "Fabio"
+      - family-names: "Di Clemente"
+        given-names: "Riccardo"
+      - family-names: "Gabrielli"
+        given-names: "Andrea"
+      - family-names: "Squartini"
+        given-names: "Tiziano"
+    title: "Randomizing bipartite networks: the case of the World Trade Web"
+    journal: "Scientific Reports"
+    volume: 5
+    pages: "10595"
+    year: 2015
+  - type: article
+    authors:
+      - family-names: "Saracco"
+        given-names: "Fabio"
+      - family-names: "Straka"
+        given-names: "Mika J."
+      - family-names: "Di Clemente"
+        given-names: "Riccardo"
+      - family-names: "Gabrielli"
+        given-names: "Andrea"
+      - family-names: "Caldarelli"
+        given-names: "Guido"
+      - family-names: "Squartini"
+        given-names: "Tiziano"
+    title: "Inferring monopartite projections of bipartite networks: an entropy-based approach"
+    journal: "New Journal of Physics"
+    volume: 19
+    pages: "053022"
+    year: 2017
