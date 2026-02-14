@@ -18,7 +18,7 @@ The methodology is described in the companion preprint
 ## Installation
 
 ```bash
-pip install trident
+pip install trident-validator
 ```
 
 For development:

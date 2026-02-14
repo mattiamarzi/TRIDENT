@@ -3,7 +3,7 @@
 This page assumes TRIDENT is installed as
 
 ```bash
-pip install trident
+pip install trident-validator
 ```
 
 TRIDENT expects a binary bipartite biadjacency matrix $A$ of shape $(N, M)$.
