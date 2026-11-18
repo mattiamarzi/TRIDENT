@@ -75,6 +75,11 @@ time; the validated sets are the same.
 
 ## Documentation
 
+Version 0.2.0 aligns the normal and refined-normal approximations with the
+documented inclusive upper tail. Their p-values and validated sets can differ
+from version 0.1.0; empirical analyses using these approximations should be rerun.
+The Poisson and exact Poisson-binomial methods retain their existing behavior.
+
 See the `docs/` folder:
 
 - `docs/api_quick_reference.md`

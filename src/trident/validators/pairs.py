@@ -9,7 +9,7 @@ computes p-values for the number of common neighbors (V-motifs) of
 each country pair (i, j) under several approximations:
 
     • "poisson" :  S ≈ Poisson(μ)
-    • "normal"  :  CLT with continuity correction (+0.5)
+    • "normal"  :  CLT with inclusive upper-tail continuity correction
     • "rna"     :  refined normal approx. (skewness correction)
     • "poibin"  :  exact Poisson–binomial via FFT  (recommended)
 
@@ -189,12 +189,12 @@ def _worker(task: tuple[int, int]):
         return i, j, float(poisson.sf(v_obs - 1, mu))
 
     if _method == "normal":
-        # CLT with continuity correction (+0.5)
+        # Include the probability mass at the observed integer count.
         var = float((probs * (1.0 - probs)).sum())
         if var <= 0.0:
             # Degenerate: if v_obs ≤ μ then P{S ≥ v_obs} = 1 else 0
             return i, j, (1.0 if v_obs <= mu else 0.0)
-        z = (v_obs + 0.5 - mu) / math.sqrt(var)
+        z = (v_obs - 0.5 - mu) / math.sqrt(var)
         return i, j, float(norm.sf(z))
 
     if _method == "rna":
@@ -204,7 +204,7 @@ def _worker(task: tuple[int, int]):
         if sigma == 0.0:
             return i, j, (1.0 if v_obs <= mu else 0.0)
         gamma   = float((var_arr * (1.0 - 2.0 * probs)).sum() / (sigma ** 3))
-        z       = (v_obs + 0.5 - mu) / sigma
+        z       = (v_obs - 0.5 - mu) / sigma
         # First get CDF with skewness correction, then convert to upper tail
         cdf = float(norm.cdf(z) + gamma * (1.0 - z**2) * norm.pdf(z) / 6.0)
         cdf = min(max(cdf, 0.0), 1.0)

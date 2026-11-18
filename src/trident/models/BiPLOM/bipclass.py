@@ -855,7 +855,7 @@ class BipartiteGraph1:
 
     def pval_calculator(self, v_list_key, x, y, V):
         """
-        Calculate the p-values of the v-motifs numbers of one vertex and all its neighbours.
+        Calculate inclusive upper-tail p-values for the motif counts of one vertex.
         :param int v_list_key: the key of the node to consider for the adjacency list of the v-motifs.
         :param numpy.ndarray x: the fitnesses of the layer of the desired projection.
         :param numpy.ndarray y: the fitnesses of the opposite layer.
@@ -875,18 +875,27 @@ class BipartiteGraph1:
                 if self.projection_method == 'poisson':
                     temp_pvals_dict[neighbor1][neighbor2] = \
                         poisson.sf(k=self.v_adj_list[v_list_key][neighbor1][neighbor2] - 1, mu=avg_v)
-                elif self.projection_method == 'normal':
-                    sigma_v = np.sqrt(np.sum(probs * (1 - probs)))
-                    temp_pvals_dict[neighbor1][neighbor2] = \
-                        norm.cdf((self.v_adj_list[v_list_key][neighbor1][neighbor2] + 0.5 - avg_v) / sigma_v)
-                elif self.projection_method == 'rna':
+                elif self.projection_method in ('normal', 'rna'):
+                    observed = self.v_adj_list[v_list_key][neighbor1][neighbor2]
+                    if observed == 0:
+                        temp_pvals_dict[neighbor1][neighbor2] = 1.0
+                        continue
                     var_v_arr = probs * (1 - probs)
                     sigma_v = np.sqrt(np.sum(var_v_arr))
+                    if sigma_v == 0.0:
+                        temp_pvals_dict[neighbor1][neighbor2] = 1.0 if observed <= avg_v else 0.0
+                        continue
+                    # The upper tail includes the mass at the observed count.
+                    eval_x = (observed - 0.5 - avg_v) / sigma_v
+                    if self.projection_method == 'normal':
+                        temp_pvals_dict[neighbor1][neighbor2] = norm.sf(eval_x)
+                        continue
                     gamma_v = (sigma_v ** (-3)) * np.sum(var_v_arr * (1 - 2 * probs))
-                    eval_x = (self.v_adj_list[v_list_key][neighbor1][neighbor2] + 0.5 - avg_v) / sigma_v
                     pval = norm.cdf(eval_x) + gamma_v * (1 - eval_x ** 2) * norm.pdf(eval_x) / 6
-                    temp_pvals_dict[neighbor1][neighbor2] = max(min(pval, 1), 0)
+                    temp_pvals_dict[neighbor1][neighbor2] = 1.0 - max(min(pval, 1), 0)
                 elif self.projection_method == 'poibin':
+                    from ...validators.triplets import PoiBin
+
                     pb_obj = PoiBin(probs)
                     temp_pvals_dict[neighbor1][neighbor2] = pb_obj.pval(int(self.v_adj_list[v_list_key][neighbor1][neighbor2]))
         return temp_pvals_dict

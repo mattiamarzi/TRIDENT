@@ -57,6 +57,9 @@ df, thr = val.validate(pvals, alpha=0.05, method="fdr")
 
 ## Methods for p-values
 
+All methods target the inclusive upper tail, the probability of a motif count
+greater than or equal to the observed count.
+
 Both validators accept:
 
 - `"poisson"`: Poisson approximation

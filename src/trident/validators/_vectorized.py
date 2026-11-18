@@ -131,7 +131,8 @@ def pvalues(v, mu, var, m3, method: str) -> np.ndarray:
     p[deg] = np.where(v[deg] <= mu[deg], 1.0, 0.0)
     ok = pos & (var > 0.0)
     sigma = np.sqrt(var[ok])
-    z = (v[ok] + 0.5 - mu[ok]) / sigma
+    # Include the probability mass at the observed integer count.
+    z = (v[ok] - 0.5 - mu[ok]) / sigma
     if method == "normal":
         p[ok] = norm.sf(z)
         return p

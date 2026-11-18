@@ -102,10 +102,16 @@ When an exact Poisson-binomial evaluation is unnecessary or too expensive, TRIDE
 
 - **Poisson**: $V \approx \mathrm{Poisson}(\mu)$ with $\mu = \sum_\alpha q_\alpha$.
 - **Normal (CLT)**: $V \approx \mathcal{N}(\mu, \sigma^2)$ with
-  $\sigma^2 = \sum_\alpha q_\alpha (1 - q_\alpha)$, using continuity correction.
+  $\sigma^2 = \sum_\alpha q_\alpha (1 - q_\alpha)$, using continuity correction
+  for the inclusive upper tail $\mathbb{P}(V \ge V^*)$.
 - **Refined normal**: a skewness-corrected Gaussian approximation.
 
 For the exact Poisson-binomial probability mass function, TRIDENT uses an FFT-based method.
+
+The normal and refined-normal approximations include the probability mass at
+the observed integer count in their upper-tail boundary. A zero observed count
+has p-value 1. For a deterministic count with mean $\mu$, the p-value is 1 when
+$V^* \le \mu$ and 0 otherwise.
 
 ## Multiple-testing correction
 

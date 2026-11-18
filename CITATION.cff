@@ -5,8 +5,7 @@ type: software
 authors:
   - family-names: "Marzi"
     given-names: "Mattia"
-version: "0.1.0"
-date-released: "2026-01-19"
+version: "0.2.0"
 license: "MIT"
 keywords:
   - bipartite networks
