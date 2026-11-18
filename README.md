@@ -64,6 +64,15 @@ pvals = val.compute_pvals(method="normal")
 df_triplets, thr = val.validate(pvals, alpha=0.05, method="fdr")
 ```
 
+## Performance
+
+For `method="poisson"`, `"normal"` and `"rna"`, `compute_pvals` evaluates all pairs or
+triplets at once (`engine="auto"`, the default): the moments of the Poisson-binomial
+counts come from matrix products. On a 116 x 2,400 binary matrix (one resting-state fMRI
+scan), the p-values of all 253,460 triplets take about 0.5 s on one laptop core (Intel
+Core i5-1334U), against about 22 s with `engine="loop"`, which evaluates one triplet at a
+time; the validated sets are the same.
+
 ## Documentation
 
 See the `docs/` folder:

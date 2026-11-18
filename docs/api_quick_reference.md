@@ -63,3 +63,8 @@ Both validators accept:
 - `"normal"`: Gaussian approximation with continuity correction
 - `"rna"`: refined normal approximation (skewness correction)
 - `"poibin"`: Poisson-binomial via FFT
+
+`compute_pvals(method, engine="auto")`: with the default `engine="auto"`, the methods
+`"poisson"`, `"normal"` and `"rna"` are computed for all pairs or triplets at once
+(`engine="vectorized"`); `"poibin"`, or `engine="loop"`, evaluates one tuple at a time
+with `n_jobs` workers. The two engines give the same p-values up to floating-point rounding.

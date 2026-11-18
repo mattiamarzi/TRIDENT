@@ -36,6 +36,8 @@ import pandas as pd
 from tqdm.auto import tqdm
 from scipy.stats import poisson, norm, binom
 
+from . import _vectorized as _vec
+
 # =============================================================================
 # FFT-based Poisson–binomial (exact)  — stable and fast
 # =============================================================================
@@ -257,18 +259,34 @@ class TwoStarValidator:
 
         # Observed counts & adjacency
         self.adj    = _adj_from_matrix(self.A)
-        self.counts = _pair_counts(self.adj, include_absent=include_absent)
+        self.counts = _vec.pair_counts(self.A, include_absent=include_absent)   # = _pair_counts(self.adj, ...)
 
     # .........................................................................
-    def compute_pvals(self, method: str = "poibin") -> dict[int, dict[int, float]]:
+    def compute_pvals(self, method: str = "poibin", engine: str = "auto") -> dict[int, dict[int, float]]:
         """
         Compute p-values for all pairs i<j under the requested method.
+
+        Parameters
+        ----------
+        method : {"poisson", "normal", "rna", "poibin"}, default "poibin"
+            Approximation of the Poisson–binomial tail (see the module docstring).
+        engine : {"auto", "vectorized", "loop"}, default "auto"
+            "vectorized" computes the moments of all pairs at once with array
+            operations (methods "poisson", "normal", "rna"; same formulas and
+            edge cases as the loop, p-values equal up to floating-point
+            rounding). "loop" evaluates one pair at a time with `n_jobs`
+            workers (any method). "auto" uses "vectorized" whenever the method
+            allows it.
 
         Returns
         -------
         pvals : dict
             Nested dict pvals[i][j] = p-value for i<j.
         """
+        if _vec.resolve_engine(method, engine) == "vectorized":
+            p = _vec.pvalues(*_vec.pair_moments(self.A, self.P), method)
+            return _vec.nest_pairs(p, self.A.shape[0], self.counts)
+
         tasks = [(i, j) for i in self.counts for j in self.counts[i]]
         out: dict[int, dict[int, float]] = {}
 

@@ -86,6 +86,10 @@ The same interface applies to both pairwise and triplet validation.
 ## Notes on performance
 
 - For exact p-values, use `method="poibin"`.
+- With `method="poisson"`, `"normal"` or `"rna"`, `compute_pvals` evaluates all pairs or
+  triplets at once: the moments of the Poisson-binomial counts come from matrix products
+  of `P` and of its element-wise powers. `engine="loop"` keeps the one-tuple-at-a-time
+  evaluation (same p-values up to floating-point rounding).
 - For large systems, computing all triplets is combinatorially expensive.
   In such cases, users commonly restrict the search space (for example, by
   screening candidate triplets using pairwise results).
